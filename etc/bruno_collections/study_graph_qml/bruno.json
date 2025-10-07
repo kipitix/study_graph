@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "study_graph_qml",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

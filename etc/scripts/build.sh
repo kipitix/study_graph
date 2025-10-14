@@ -244,7 +244,7 @@ echo "Проект: $PROJECT_ROOT"
 echo "Выходная директория: $BIN_DIR"
 
 # Очищаем предыдущие сборки (но оставляем исполняемые файлы)
-clean_previous_builds
+# clean_previous_builds
 
 # Собираем клиента
 build_client

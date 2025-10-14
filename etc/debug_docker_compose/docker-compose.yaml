@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:18 # Specifies the PostgreSQL image and version
+    restart: always # Ensures the container restarts automatically
+    environment:
+      POSTGRES_DB: study_graph_qml # Sets the default database name
+      POSTGRES_USER: study_graph_qml # Sets the default username
+      POSTGRES_PASSWORD: study_graph_qml # Sets the password for the user
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
+    volumes:
+      - study_graph_qml_data:/var/lib/postgresql/data # Mounts a named volume for persistent data storage
+volumes:
+  study_graph_qml_data: # Defines the named volume

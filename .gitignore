@@ -35,5 +35,5 @@
 # vscode
 .vscode
 
-#build
-build
+#bin
+bin

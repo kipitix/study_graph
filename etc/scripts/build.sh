@@ -25,7 +25,43 @@ fi
 # Создаем директорию bin в корне проекта
 BIN_DIR="$PROJECT_ROOT/bin"
 echo "Создание директории $BIN_DIR"
-mkdir -p "$BIN_DIR"
+
+# Функция для очистки предыдущих сборок
+clean_previous_builds() {
+    echo "Очистка предыдущих сборок..."
+
+    # Удаляем билд-директории, но оставляем собранные исполняемые файлы
+    if [ -d "$BIN_DIR/build_server" ]; then
+        echo "Удаление $BIN_DIR/build_server"
+        rm -rf "$BIN_DIR/build_server"
+    fi
+
+    if [ -d "$BIN_DIR/build_client" ]; then
+        echo "Удаление $BIN_DIR/build_client"
+        rm -rf "$BIN_DIR/build_client"
+    fi
+
+    # Создаем чистую bin директорию (оставляя существующие исполняемые файлы)
+    mkdir -p "$BIN_DIR"
+}
+
+# Функция для полной очистки (опционально)
+clean_all() {
+    echo "Полная очистка билд-директорий..."
+    if [ -d "$BIN_DIR" ]; then
+        echo "Удаление $BIN_DIR"
+        rm -rf "$BIN_DIR"
+    fi
+    mkdir -p "$BIN_DIR"
+}
+
+# Обработка аргументов командной строки
+if [ "$1" = "clean" ]; then
+    clean_all
+    exit 0
+elif [ "$1" = "clean-build" ]; then
+    clean_previous_builds
+fi
 
 # Функция для проверки и настройки Qt
 setup_qt() {
@@ -100,9 +136,19 @@ build_server() {
         "-DCMAKE_BUILD_TYPE=Release"
     )
 
-    # Добавляем Boost путь если установлен
-    if [ -n "$BOOST_DIR" ]; then
-        cmake_args+=("-DBOOST_DIR=$BOOST_DIR")
+    # В зависимости от структуры Boost, передаем разные переменные
+    # Пробуем разные варианты, которые понимает find_package(Boost)
+    if [ -f "$BOOST_DIR/boost/version.hpp" ]; then
+        # Если Boost установлен в BOOST_DIR напрямую
+        cmake_args+=("-DBoost_DIR=$BOOST_DIR")
+        cmake_args+=("-DBoost_INCLUDE_DIR=$BOOST_DIR")
+    elif [ -f "$BOOST_DIR/include/boost/version.hpp" ]; then
+        # Если Boost установлен в BOOST_DIR/include
+        cmake_args+=("-DBoost_DIR=$BOOST_DIR")
+        cmake_args+=("-DBoost_INCLUDE_DIR=$BOOST_DIR/include")
+    else
+        # Просто передаем как есть
+        cmake_args+=("-DBoost_DIR=$BOOST_DIR")
     fi
 
     # Конфигурируем проект с помощью CMake
@@ -196,6 +242,9 @@ copy_executable() {
 echo "Начало сборки проекта..."
 echo "Проект: $PROJECT_ROOT"
 echo "Выходная директория: $BIN_DIR"
+
+# Очищаем предыдущие сборки (но оставляем исполняемые файлы)
+clean_previous_builds
 
 # Собираем клиента
 build_client

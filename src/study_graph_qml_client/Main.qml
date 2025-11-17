@@ -15,7 +15,7 @@ Window {
         y: 192
         text: qsTr("Button")
 
-        onClicked: XHR.sendRequest("http://localhost:8080/healthcheck", function(response) {
+        onClicked: XHR.sendRequest("http://localhost:8080/hello?name=Alexander", function(response) {
             console.log(response.status);
             console.log(response.contentType);
             console.log(response.content);

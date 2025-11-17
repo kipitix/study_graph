@@ -1,0 +1,20 @@
+meta {
+  name: hello
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://{{SERVER_ADDRESS}}/hello?name=Alexander
+  body: none
+  auth: inherit
+}
+
+params:query {
+  name: Alexander
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

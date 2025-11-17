@@ -7,6 +7,7 @@ include(DownloadUserver)
 find_package(
     userver
     COMPONENTS core #
+               postgresql
     QUIET
 )
 if(NOT userver_FOUND)
@@ -23,10 +24,12 @@ add_library(
     ${PROJECT_NAME}_objs OBJECT
     src/greeting.cpp #
     src/hello.cpp #
+    src/hello_postgres.cpp
 )
 target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver::core #
+           userver::postgresql
 )
 
 

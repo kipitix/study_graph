@@ -8,20 +8,25 @@
 #include <userver/server/handlers/tests_control.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
 
+#include <userver/storages/postgres/component.hpp> 
 
 #include <userver/utils/daemon_run.hpp>
 
 #include <hello.hpp>
+#include <hello_postgres.hpp> 
 
 int main(int argc, char* argv[]) {
     auto component_list = userver::components::MinimalServerComponentList()
                               .Append<userver::server::handlers::Ping>()
                               .Append<userver::components::TestsuiteSupport>()
+                              .Append<userver::components::HttpClientCore>()
                               .Append<userver::components::HttpClient>()
                               .Append<userver::clients::dns::Component>()
                               .Append<userver::server::handlers::TestsControl>()
                               .Append<userver::congestion_control::Component>()
                               .Append<study_graph_userver::Hello>()
+                              .Append<userver::components::Postgres>("postgres-db-1")
+                              .Append<study_graph_userver::HelloPostgres>()
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);

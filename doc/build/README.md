@@ -12,7 +12,7 @@
 
 1. Скопировать [скрипт](https://userver.tech/d4/dac/service-template_2userver-create-service_8sh-example.html) себе в репозиторий (etc/scripts/userver/userver-create-service.sh)
 2. Перейти в репозитории в директорию `src`
-3. И оттуда выполнить `../etc/scripts/userver/userver-create-service.sh study_graph_userver`
+3. И оттуда выполнить `../etc/scripts/userver/userver-create-service.sh --postgresql study_graph_userver`
 4. Установить в `VSCode` требуемые расширения для `Dev containers` (ms-vscode-remote.remote-containers)
 5. Открыть директорию `src/study_graph_userver` в `VSCode` и за счёт того, что в корне директории есть директория `.devcontainer` будет предложено переоткрыть проект но в `Dev Containers` (соглашаемся)
 6. Будут скачены требуемые образы и переключено в консоль контейнера (первый раз занимает довольно много времени)
